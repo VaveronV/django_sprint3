@@ -5,7 +5,8 @@ user = get_user_model()
 
 
 class PublishedAndCreateModel(models.Model):
-    """ Абстрактная модель с общими полями is_published и created_at"""
+    """Абстрактная модель с общими полями is_published и created_at."""
+
     is_published = models.BooleanField(
         'Опубликовано',
         default=True,
@@ -23,9 +24,9 @@ class Category(PublishedAndCreateModel):
     slug = models.SlugField(
         'Идентификатор',
         unique=True,
-        help_text='Идентификатор страницы для URL; разрешены символы' \
+        help_text='Идентификатор страницы для URL; разрешены символы'
         ' латиницы, цифры, дефис и подчёркивание.'
-        )
+    )
 
     class Meta:
         verbose_name = 'категория'
@@ -51,9 +52,9 @@ class Post(PublishedAndCreateModel):
     text = models.TextField('Текст')
     pub_date = models.DateTimeField(
         'Дата и время публикации',
-        help_text='Если установить дату и время в будущем — можно ' \
+        help_text='Если установить дату и время в будущем — можно '
         'делать отложенные публикации.'
-        )
+    )
     author = models.ForeignKey(
         user,
         on_delete=models.CASCADE,

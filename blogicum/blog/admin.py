@@ -35,7 +35,7 @@ class PostAdmin(admin.ModelAdmin):
     filter_horizontal = ()
     raw_id_fields = ('author',)
     readonly_fields = ('created_at',)
-    
+
     fieldsets = (
         ('Основная информация', {
             'fields': ('title', 'text', 'author')
