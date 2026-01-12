@@ -1,6 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
-from .models import Post, Category
+
+from .models import Category, Post
+from .constants import LATEST_POSTS_COUNT
 
 
 def index(request):
@@ -11,7 +13,7 @@ def index(request):
         pub_date__lte=timezone.now(),
         category__is_published=True
     ).select_related('author', 'category', 'location'
-                     ).order_by('-pub_date')[:5]
+                     ).order_by('-pub_date')[:LATEST_POSTS_COUNT]
     context = {
         'post_list': post_list,
     }
@@ -42,8 +44,7 @@ def category_posts(request, category_slug):
         slug=category_slug,
         is_published=True
     )
-    post_list = Post.objects.filter(
-        category=category,
+    post_list = category.posts.filter(
         is_published=True,
         pub_date__lte=timezone.now()
     ).select_related('author', 'category', 'location').order_by('-pub_date')

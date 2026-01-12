@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from .constants import MAX_LENGTH_SHORT_TEXT
+
 user = get_user_model()
 
 
@@ -19,13 +21,15 @@ class PublishedAndCreateModel(models.Model):
 
 
 class Category(PublishedAndCreateModel):
-    title = models.CharField('Заголовок', max_length=256)
+    title = models.CharField('Заголовок', max_length=MAX_LENGTH_SHORT_TEXT)
     description = models.TextField('Описание')
     slug = models.SlugField(
         'Идентификатор',
         unique=True,
-        help_text='Идентификатор страницы для URL; разрешены символы'
-        ' латиницы, цифры, дефис и подчёркивание.'
+        help_text=(
+            'Идентификатор страницы для URL; разрешены символы'
+            ' латиницы, цифры, дефис и подчёркивание.'
+        )
     )
 
     class Meta:
@@ -37,7 +41,7 @@ class Category(PublishedAndCreateModel):
 
 
 class Location(PublishedAndCreateModel):
-    name = models.CharField('Название места', max_length=256)
+    name = models.CharField('Название места', max_length=MAX_LENGTH_SHORT_TEXT)
 
     class Meta:
         verbose_name = 'местоположение'
@@ -48,12 +52,14 @@ class Location(PublishedAndCreateModel):
 
 
 class Post(PublishedAndCreateModel):
-    title = models.CharField('Заголовок', max_length=256)
+    title = models.CharField('Заголовок', max_length=MAX_LENGTH_SHORT_TEXT)
     text = models.TextField('Текст')
     pub_date = models.DateTimeField(
         'Дата и время публикации',
-        help_text='Если установить дату и время в будущем — можно '
-        'делать отложенные публикации.'
+        help_text=(
+            'Если установить дату и время в будущем — можно'
+            ' делать отложенные публикации.'
+        )
     )
     author = models.ForeignKey(
         user,
@@ -77,6 +83,7 @@ class Post(PublishedAndCreateModel):
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
+        default_related_name = 'posts'
 
     def __str__(self):
         return self.title
